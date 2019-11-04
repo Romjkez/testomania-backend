@@ -1,0 +1,46 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "jsRules": {
+    "no-unused-expression": true
+  },
+  "rules": {
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "member-access": [
+      false
+    ],
+    "ordered-imports": [
+      false
+    ],
+    "max-line-length": [
+      true,
+      140
+    ],
+    "member-ordering": [
+      false
+    ],
+    "interface-name": [
+      false
+    ],
+    "arrow-parens": false,
+    "only-arrow-functions": false,
+    "object-literal-sort-keys": false,
+    "no-empty": true,
+    "prefer-const": true,
+    "prefer-template": true,
+    "prefer-readonly": true,
+    "no-duplicate-imports": true,
+    "no-shadowed-variable": true,
+    "one-variable-per-declaration": true,
+    "no-var-keyword": true,
+    "no-trailing-whitespace": true,
+    "triple-equals": true,
+    "typedef": true,
+    "object-literal-shorthand": false
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "username": "std_247",
+  "password": "qwerty123",
+  "database": "std_247",
+  "entities": [
+    "dist/**/*.entity{.ts,.js}"
+  ],
+  "synchronize": true
+}
