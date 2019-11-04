@@ -14,7 +14,7 @@ export class User {
   @Column({ type: 'varchar', length: MAX_PASSWORD_LENGTH, nullable: false })
   password: string;
 
-  @Column({ type: 'varchar', length: MAX_EMAIL_LENGTH, nullable: true })
+  @Column({ type: 'varchar', length: MAX_EMAIL_LENGTH, nullable: true, unique: true })
   email: string;
 
   @Column({ type: 'varchar', length: MAX_LOGIN_LENGTH, nullable: false, unique: true })
@@ -27,6 +27,7 @@ export class User {
   updatedAt: Date;
 
   @OneToMany(type => Test, test => test.createdBy)
+  @JoinTable()
   createdTests: Test[];
 
   @ManyToMany(type => Test, test => test.finishedBy)

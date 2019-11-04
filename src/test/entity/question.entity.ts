@@ -15,7 +15,7 @@ export class Question {
   options: string[];
 
   @Column('int')
-  rightOption: number;
+  rightOptionId: number;
 
   @ManyToOne(type => Test, test => test.questions)
   parentTest: Test;
