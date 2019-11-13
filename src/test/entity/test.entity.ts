@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../../user/entity/user.entity';
 import { Question } from './question.entity';
 
@@ -17,9 +17,6 @@ export class Test {
 
   @ManyToOne(type => User, user => user.createdTests)
   createdBy: User;
-
-  @ManyToMany(type => User, user => user.finishedTests)
-  finishedBy: User[];
 
   @OneToMany(type => Question, question => question.parentTest)
   @JoinTable()

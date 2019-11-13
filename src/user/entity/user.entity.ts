@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Test } from '../../test/entity/test.entity';
 
 export const MAX_EMAIL_LENGTH: number = 150;
@@ -26,11 +26,15 @@ export class User {
   @Column({ type: 'timestamp', default: null, nullable: true })
   updatedAt: Date;
 
+  @Column()
+  finishedTests: TestResult[];
+
   @OneToMany(type => Test, test => test.createdBy)
   @JoinTable()
   createdTests: Test[];
+}
 
-  @ManyToMany(type => Test, test => test.finishedBy)
-  @JoinTable()
-  finishedTests: Test[];
+export interface TestResult {
+  id: number;
+  result: boolean[];
 }
