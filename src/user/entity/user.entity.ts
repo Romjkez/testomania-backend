@@ -26,7 +26,7 @@ export class User {
   @Column({ type: 'timestamp', default: null, nullable: true })
   updatedAt: Date;
 
-  @Column()
+  @Column({ type: 'json' })
   finishedTests: TestResult[];
 
   @OneToMany(type => Test, test => test.createdBy)
