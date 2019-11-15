@@ -1,4 +1,4 @@
-import { IsEmail, IsObject, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmptyObject, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 import { MAX_EMAIL_LENGTH, MAX_PASSWORD_LENGTH, TestResult } from '../entity/user.entity';
 import { ApiModelProperty } from '@nestjs/swagger';
 
@@ -17,7 +17,7 @@ export class UpdateUserDto {
   readonly email?: string;
 
   @IsOptional()
-  @IsObject()
+  @IsNotEmptyObject()
   @ApiModelProperty({ example: { id: 1, result: [true, true, true] }, type: 'object', description: 'TestResult to add to user`s model' })
   readonly finishedTests?: TestResult;
 }

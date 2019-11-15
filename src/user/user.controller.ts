@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  UsePipes,
 } from '@nestjs/common';
 import { User } from './entity/user.entity';
 import { UserService } from './user.service';
@@ -17,6 +18,7 @@ import { DeleteResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
+import { UpdateUserDtoPipe } from './pipes/update-user-dto.pipe';
 
 @Controller('user')
 export class UserController {
@@ -55,6 +57,7 @@ export class UserController {
   }
 
   @Put(':id')
+  @UsePipes(UpdateUserDtoPipe)
   async update(@Body() options: UpdateUserDto, @Param('id') id: number): Promise<User> {
     // TODO: ВАЛИДИРОВАТЬ finishedTests
     return this.userService.update(id, options).catch(e => {
