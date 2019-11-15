@@ -33,7 +33,7 @@ export class UserService {
         const options: CreateUserDto = Object.assign(createOptions, { password: hash, finishedTests: [] });
         return this.userRepository.save(options);
       })
-      .then(user => Object.assign(user, { password: '' }));
+      .then(user => Object.assign(user, { password: '', createdTests: [] }));
   }
 
   checkPassword(id: number, password: string): Promise<boolean> {
