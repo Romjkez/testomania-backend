@@ -13,30 +13,7 @@ export class TestService {
 
   async create(createOptions: CreateTestDto) {
     const test = Object.assign(createOptions, { questions: [] });
-    return this.testRepository.save(createOptions);
-    /* return of(this.testRepository.save(test))
-       .pipe(
-         first(),
-         flatMap((t: Test) => {
-           const questions: QuestionWithoutId[] = createOptions.questions.map(q => {
-             const question: QuestionWithoutId = Object.assign(q, { parentTest: t });
-             return question;
-           });
-           return zip(of(t), of(questions));
-         }),
-         map(([t, questions]) =>),
-       );*/
-
-    /*return this.testRepository.save(test)
-      .then(t => {
-        /!*const questions: QuestionWithoutId[] = createOptions.questions.map(q => {
-          const question: QuestionWithoutId = Object.assign(q, { parentTest: t });
-          return question;
-        });*!/
-        return [t, createOptions.questions];
-      })
-      .then(([t, questions]) => this.questionRepository.save(questions))
-      .then();*/
+    // TODO: привязать вопросы наподобие как у юзера
   }
 
   async delete(id: number) {

@@ -46,6 +46,7 @@ export class UserService {
   }
 
   async update(id: number, updateOptions: UpdateUserDto): Promise<User> {
+    // TODO: использовать bcrypt для нового пароля
     return this.userRepository
       .findOneOrFail(id)
       .then(user => {

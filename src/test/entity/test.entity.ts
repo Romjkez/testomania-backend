@@ -16,10 +16,10 @@ export class Test {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @ManyToOne(type => User, user => user.createdTests)
+  @ManyToOne(type => User, user => user.createdTests, { eager: true })
   createdBy: User;
 
-  @OneToMany(type => Question, question => question.parentTest)
+  @OneToMany(type => Question, question => question.parentTest, { eager: true })
   @JoinTable()
   questions: Question[];
 }
