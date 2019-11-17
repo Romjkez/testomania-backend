@@ -46,31 +46,22 @@ export class UserService {
   }
 
   async update(id: number, updateOptions: UpdateUserDto): Promise<User> {
+    let password;
+    if (updateOptions.password) {
+      password = await bcrypt.hash(updateOptions.password, 5);
+    }
     return this.userRepository
-    // TODO: поправить обновление
       .findOneOrFail(id)
-      .then(async user => {
-        if (updateOptions.finishedTest) {
-          user.finishedTests.push(updateOptions.finishedTest);
+      .then(async () => {
+        const options = { ...updateOptions, updatedAt: new Date() };
+        if (password) {
+          options.password = password;
         }
-        const options = {
-          email: updateOptions.email,
-          password: await bcrypt.hash(updateOptions.password),
-          finishedTests: user.finishedTests,
-        };
-        if (!options.email) {
-          delete options.email;
-        }
-        if (!options.password) {
-          delete options.password;
-        }
-        if (!options.finishedTests) {
-          delete options.finishedTests;
-        }
-        console.log(options);
-        return this.userRepository.update(id, Object.assign(options, { updatedAt: new Date() }));
+        return this.userRepository.update(id, options as object);
       })
-      .then(() => this.userRepository.findOneOrFail(id, SAFE_USER_OUTPUT));
+      .then(() => {
+        return this.userRepository.findOne(id, SAFE_USER_OUTPUT);
+      });
   }
 
   async delete(id: number): Promise<DeleteResult> {

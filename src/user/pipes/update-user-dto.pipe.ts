@@ -4,12 +4,12 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 @Injectable()
 export class UpdateUserDtoPipe implements PipeTransform {
   transform(value: UpdateUserDto, metadata: ArgumentMetadata): UpdateUserDto {
-    if (value.finishedTest &&
-      (!value.finishedTest.id ||
-        typeof value.finishedTest.id !== 'number' ||
-        !value.finishedTest.result ||
-        !value.finishedTest.result.length ||
-        value.finishedTest.result.length < 1)
+    if (value.finishedTests &&
+      (!value.finishedTests.id ||
+        typeof value.finishedTests.id !== 'number' ||
+        !value.finishedTests.result ||
+        !value.finishedTests.result.length ||
+        value.finishedTests.result.length < 1)
     ) {
       throw new BadRequestException('Specify correct value for `finishedTests` field.');
     }

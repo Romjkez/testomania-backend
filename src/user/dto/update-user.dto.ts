@@ -25,5 +25,5 @@ export class UpdateUserDto {
     example: { id: 1, result: [true, true, true] },
     description: 'TestResult to add to user`s model',
   })
-  readonly finishedTest?: TestResult;
+  readonly finishedTests?: TestResult;
 }
