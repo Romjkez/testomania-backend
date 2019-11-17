@@ -20,10 +20,3 @@ export class Question {
   @ManyToOne(type => Test, test => test.questions, { onDelete: 'CASCADE' })
   parentTest: Test;
 }
-
-export interface QuestionWithoutId {
-  text: string;
-  options: string[];
-  rightOptionId: number;
-  parentTest: Test;
-}

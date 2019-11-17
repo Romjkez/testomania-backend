@@ -11,12 +11,16 @@ export class TestService {
               @InjectRepository(Question) private readonly questionRepository: Repository<Question>) {
   }
 
-  async create(createOptions: CreateTestDto) {
-    const test = Object.assign(createOptions, { questions: [] });
-    // TODO: привязать вопросы наподобие как у юзера
+  async create(createOptions: CreateTestDto): Promise<Test> {
+    return this.questionRepository.save(createOptions.questions)
+      .then(questions => {
+        const options: CreateTestDto = Object.assign(createOptions, { questions: questions });
+        return this.testRepository.save(options);
+      });
   }
 
   async delete(id: number) {
+    return this.testRepository.delete(id);
   }
 
   async getById(id: number): Promise<Test> {

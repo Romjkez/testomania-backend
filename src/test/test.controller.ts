@@ -1,8 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { TestService } from './test.service';
 import { CreateTestDto } from './dto/create-test.dto';
 import { Test } from './entity/test.entity';
+import { ApiUseTags } from '@nestjs/swagger';
+import { DeleteResult } from 'typeorm';
 
+@ApiUseTags('Test')
 @Controller('test')
 export class TestController {
   constructor(private readonly testService: TestService) {
@@ -16,5 +19,10 @@ export class TestController {
   @Post()
   create(@Body() createOptions: CreateTestDto): Promise<Test> {
     return this.testService.create(createOptions);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: number): Promise<DeleteResult> {
+    return this.testService.delete(id);
   }
 }

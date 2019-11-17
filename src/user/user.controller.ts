@@ -15,11 +15,12 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiUseTags } from '@nestjs/swagger';
 import { UpdateUserDtoPipe } from './pipes/update-user-dto.pipe';
 import { DeleteResult } from 'typeorm';
 import { User } from './entity/user.entity';
 
+@ApiUseTags('User')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {

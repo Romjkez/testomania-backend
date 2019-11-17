@@ -9,7 +9,8 @@ async function bootstrap() {
     .setTitle('Testomania / Мобильная интеграция')
     .setDescription('Testomania API description')
     .setVersion('1.0')
-    .addTag('testomania')
+    .addTag('User')
+    .addTag('Test')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
