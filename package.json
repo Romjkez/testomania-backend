@@ -19,9 +19,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "^6.9.0",
-    "@nestjs/core": "^6.9.0",
-    "@nestjs/platform-express": "^6.9.0",
+    "@nestjs/common": "^6.10.1",
+    "@nestjs/core": "^6.10.1",
+    "@nestjs/platform-express": "^6.10.1",
     "@nestjs/swagger": "^3.1.0",
     "@nestjs/typeorm": "^6.2.0",
     "bcryptjs": "^2.4.3",
@@ -34,13 +34,13 @@
     "typeorm": "^0.2.20"
   },
   "devDependencies": {
-    "@nestjs/testing": "^6.9.0",
+    "@nestjs/testing": "^6.10.1",
     "@types/express": "4.17.2",
-    "@types/jest": "24.0.11",
-    "@types/node": "11.13.4",
-    "@types/supertest": "2.0.7",
+    "@types/jest": "24.0.23",
+    "@types/node": "11.15.2",
+    "@types/supertest": "2.0.8",
     "jest": "24.9.0",
-    "prettier": "1.17.0",
+    "prettier": "1.19.1",
     "supertest": "4.0.2",
     "ts-jest": "24.0.2",
     "ts-node": "8.1.0",

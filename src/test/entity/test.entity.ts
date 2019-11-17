@@ -1,12 +1,13 @@
 import { Column, Entity, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../../user/entity/user.entity';
-import { Question } from './question.entity';
+import { Question } from '../../question/entity/question.entity';
 
 export const MAX_TEST_TITLE_LENGTH: number = 200;
+export const MIN_TEST_TITLE_LENGTH: number = 3;
 
 @Entity()
 export class Test {
-  @PrimaryGeneratedColumn({ unsigned: true })
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   id: number;
 
   @Column({ type: 'varchar', length: MAX_TEST_TITLE_LENGTH, nullable: false })

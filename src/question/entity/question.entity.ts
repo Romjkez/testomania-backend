@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Test } from './test.entity';
+import { Test } from '../../test/entity/test.entity';
 
 export const MAX_QUESTION_LENGTH: number = 255;
 
@@ -17,6 +17,13 @@ export class Question {
   @Column('int')
   rightOptionId: number;
 
-  @ManyToOne(type => Test, test => test.questions)
+  @ManyToOne(type => Test, test => test.questions, { onDelete: 'CASCADE' })
+  parentTest: Test;
+}
+
+export interface QuestionWithoutId {
+  text: string;
+  options: string[];
+  rightOptionId: number;
   parentTest: Test;
 }

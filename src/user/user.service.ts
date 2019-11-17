@@ -21,7 +21,7 @@ export class UserService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {
   }
 
-  create(createOptions: CreateUserDto): Promise<User> {
+  async create(createOptions: CreateUserDto): Promise<User> {
     return this.userRepository.findOne({ login: createOptions.login })
       .then(res => {
         if (!res) {
@@ -33,15 +33,19 @@ export class UserService {
         const options: CreateUserDto = Object.assign(createOptions, { password: hash, finishedTests: [] });
         return this.userRepository.save(options);
       })
-      .then(user => Object.assign(user, { password: '', createdTests: [] }));
+      .then(user => {
+        const usr: User = Object.assign(user, { createdTests: [] });
+        delete usr.password;
+        return usr;
+      });
   }
 
-  checkPassword(id: number, password: string): Promise<boolean> {
+  async checkPassword(id: number, password: string): Promise<boolean> {
     return this.getById(id)
       .then(user => bcrypt.compare(password, user.password));
   }
 
-  update(id: number, updateOptions: UpdateUserDto): Promise<User> {
+  async update(id: number, updateOptions: UpdateUserDto): Promise<User> {
     return this.userRepository
       .findOneOrFail(id)
       .then(user => {
@@ -56,16 +60,16 @@ export class UserService {
       .then(() => this.userRepository.findOneOrFail(id, SAFE_USER_OUTPUT));
   }
 
-  delete(id: number): Promise<DeleteResult> {
+  async delete(id: number): Promise<DeleteResult> {
     return this.userRepository.delete(id);
   }
 
-  getById(id: number): Promise<User> {
+  async getById(id: number): Promise<User> {
     return this.userRepository
       .findOneOrFail(id, SAFE_USER_OUTPUT);
   }
 
-  getMultipleById(ids: number[]): Promise<User[]> {
+  async getMultipleById(ids: number[]): Promise<User[]> {
     return this.userRepository
       .findByIds(ids, SAFE_USER_OUTPUT as FindManyOptions);
   }
