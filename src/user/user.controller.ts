@@ -15,7 +15,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOkResponse, ApiUseTags } from '@nestjs/swagger';
+import { ApiImplicitQuery, ApiOkResponse, ApiUseTags } from '@nestjs/swagger';
 import { UpdateUserDtoPipe } from './pipes/update-user-dto.pipe';
 import { DeleteResult } from 'typeorm';
 import { User } from './entity/user.entity';
@@ -24,6 +24,21 @@ import { User } from './entity/user.entity';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {
+  }
+
+  @Get('auth')
+  @ApiImplicitQuery({ name: 'login', type: 'string', required: true })
+  @ApiImplicitQuery({ name: 'password', type: 'string', required: true })
+  async checkUserPassword(@Query('login') login: string,
+                          @Query('password') pass: string): Promise<{ correctPassword: boolean }> {
+    return this.userService.checkPassword(login, pass).then(res => {
+      return { correctPassword: res };
+    }).catch(e => {
+      if (e.name === 'EntityNotFound') {
+        throw new NotFoundException(`No user found with specified login: ${login}`);
+      }
+      throw new BadRequestException(e);
+    });
   }
 
   @Get('multiple')
@@ -47,14 +62,6 @@ export class UserController {
       }
       throw new BadRequestException(e.message);
     });
-  }
-
-  @Post(':id/auth')
-  async checkPassword(@Param('id') id: number, @Body('password') pass: string): Promise<{ correctPassword: boolean }> {
-    return this.userService.checkPassword(id, pass)
-      .then(res => {
-        return { correctPassword: res };
-      });
   }
 
   @Put(':id')

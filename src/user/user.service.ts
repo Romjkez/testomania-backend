@@ -40,22 +40,34 @@ export class UserService {
       });
   }
 
-  async checkPassword(id: number, password: string): Promise<boolean> {
-    return this.getById(id)
+  async checkPassword(login: string, password: string): Promise<boolean> {
+    return this.userRepository.findOneOrFail({ login: login })
       .then(user => bcrypt.compare(password, user.password));
   }
 
   async update(id: number, updateOptions: UpdateUserDto): Promise<User> {
-    // TODO: использовать bcrypt для нового пароля
     return this.userRepository
+    // TODO: поправить обновление
       .findOneOrFail(id)
-      .then(user => {
-        user.finishedTests.push(updateOptions.finishedTests);
+      .then(async user => {
+        if (updateOptions.finishedTest) {
+          user.finishedTests.push(updateOptions.finishedTest);
+        }
         const options = {
-          email: updateOptions.email || undefined,
-          password: updateOptions.password || undefined,
-          finishedTests: user.finishedTests || [],
+          email: updateOptions.email,
+          password: await bcrypt.hash(updateOptions.password),
+          finishedTests: user.finishedTests,
         };
+        if (!options.email) {
+          delete options.email;
+        }
+        if (!options.password) {
+          delete options.password;
+        }
+        if (!options.finishedTests) {
+          delete options.finishedTests;
+        }
+        console.log(options);
         return this.userRepository.update(id, Object.assign(options, { updatedAt: new Date() }));
       })
       .then(() => this.userRepository.findOneOrFail(id, SAFE_USER_OUTPUT));

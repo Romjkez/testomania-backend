@@ -1,6 +1,7 @@
 import { IsEmail, IsNotEmptyObject, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
-import { MAX_EMAIL_LENGTH, MAX_PASSWORD_LENGTH, TestResult } from '../entity/user.entity';
+import { MAX_EMAIL_LENGTH, MAX_PASSWORD_LENGTH } from '../entity/user.entity';
 import { ApiModelProperty } from '@nestjs/swagger';
+import { TestResult } from '../../common/model/test-result.model';
 
 export class UpdateUserDto {
   @IsOptional()
@@ -18,6 +19,11 @@ export class UpdateUserDto {
 
   @IsOptional()
   @IsNotEmptyObject()
-  @ApiModelProperty({ example: { id: 1, result: [true, true, true] }, type: 'object', description: 'TestResult to add to user`s model' })
-  readonly finishedTests?: TestResult;
+  @ApiModelProperty({
+    required: false,
+    type: TestResult,
+    example: { id: 1, result: [true, true, true] },
+    description: 'TestResult to add to user`s model',
+  })
+  readonly finishedTest?: TestResult;
 }

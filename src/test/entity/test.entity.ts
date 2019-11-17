@@ -16,6 +16,9 @@ export class Test {
   @Column({ type: 'text', nullable: true })
   description: string;
 
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
   @ManyToOne(type => User, user => user.createdTests, { eager: true })
   createdBy: User;
 

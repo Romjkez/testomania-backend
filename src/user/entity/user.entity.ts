@@ -1,5 +1,6 @@
 import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Test } from '../../test/entity/test.entity';
+import { TestResult } from '../../common/model/test-result.model';
 
 export const MAX_EMAIL_LENGTH: number = 150;
 export const MAX_PASSWORD_LENGTH: number = 150;
@@ -32,16 +33,4 @@ export class User {
   @OneToMany(type => Test, test => test.createdBy)
   @JoinTable()
   createdTests: Test[];
-}
-
-export interface TestResult {
-  /**
-   * ID of the test
-   */
-  id: number;
-  /**
-   * Results of the test
-   * example: [true, true, false]
-   */
-  result: boolean[];
 }

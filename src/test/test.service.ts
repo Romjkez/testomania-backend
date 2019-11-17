@@ -4,6 +4,7 @@ import { Test } from './entity/test.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTestDto } from './dto/create-test.dto';
 import { Question } from '../question/entity/question.entity';
+import { SortType } from './test.controller';
 
 @Injectable()
 export class TestService {
@@ -25,6 +26,10 @@ export class TestService {
 
   async getById(id: number): Promise<Test> {
     return this.testRepository.findOneOrFail(id);
+  }
+
+  async getAll(sort: SortType, offset: number, limit: number) {
+    return this.testRepository.find({ order: { createdAt: sort }, skip: offset, take: limit });
   }
 
   async getMultipleById(ids: number[]) {
