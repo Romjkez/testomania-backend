@@ -4,6 +4,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TestModule } from './test/test.module';
 import { typeOrmOptions } from '../config/typeorm.config';
+import { Connection } from 'typeorm';
 
 @Module({
   imports: [
@@ -14,4 +15,6 @@ import { typeOrmOptions } from '../config/typeorm.config';
   controllers: [AppController],
 })
 export class AppModule {
+  constructor(private readonly connection: Connection) {
+  }
 }
