@@ -11,6 +11,7 @@ import { TestController } from './test.controller';
   ],
   controllers: [TestController],
   providers: [TestService],
+  exports: [TypeOrmModule],
 })
 export class TestModule {
 }
