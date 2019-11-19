@@ -73,10 +73,10 @@
     - result - Array<boolean> (результаты ответов)
 
 Пример `TestResult`:
-```javascript
+```
 {
-  id: 1, // завершен тест с ID 1
-  result: [true, true, false] // первые 2 ответа верные, 3-ий - неверный
+  "id": 1, // завершен тест с ID 1
+  "result": [true, true, false] // первые 2 ответа верные, 3-ий - неверный
 }
 ```
 
@@ -126,7 +126,7 @@
     - `rightOptionId`* - number (ID элемента массива `options` с правильным ответом)
     
     Пример `Question`:
-    ```json
+    ```
     {
       "text": "Сколько будет 2+2?",
       "options": ["2", "4", "6"],
