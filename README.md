@@ -1,75 +1,168 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# Testmania \ REST API
+Содержание
+- [API пользователя](#Пользователь)
+- [API теста](#Тест)
+- [Формат ошибок](#Ошибки)
+- [Основные модели] (#Модели)
 
-[travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
-[travis-url]: https://travis-ci.org/nestjs/nest
-[linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
-[linux-url]: https://travis-ci.org/nestjs/nest
+## Пользователь
+### Получение пользователя
+
+- Метод: GET
+- Путь: /user/:id
+- Тело запроса (JSON): нет
+- URL параметры: нет
+- Формат ответа: объект `User` и ИЛИ [ошибка](#Ошибки)
+
+### Получение нескольких пользователей
+
+- Метод: GET
+- Путь: /user/multiple/
+- Тело запроса (JSON): нет
+- URL параметры: 
+    - `ids` - Array\<number> (массив из нужных id пользователей)
+- Формат ответа: массив объектов `User` ИЛИ [ошибка](#Ошибки)
+
+
+### Создание пользователя
+- Метод: POST
+- Путь: /user
+- Тело запроса (JSON): 
+    - `login`* - string (логин пользователя)
+    - `password`* - string (пароль пользователя, не менее 6 символов)
+    - `email` - string (эл. почта пользователя)
+- URL параметры: нет
+- Формат ответа: объект `User` ИЛИ [ошибка](#Ошибки)
+
+\* - обязательные поля
+### Авторизация пользователя
+- Метод: GET
+- Путь: /user/auth
+- Тело запроса (JSON): нет
+- URL параметры: 
+    - `login`* - string (логин пользователя, указанный при регистрации)
+    - `password`* - string (пароль, указанный при регистрации)
+- Формат ответа: объект
+    - `correctPassword` - boolean (true, если пароль верный; false, если нет)
+       
+  ИЛИ [ошибка](#Ошибки)
   
-  <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/dm/@nestjs/core.svg" alt="NPM Downloads" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://api.travis-ci.org/nestjs/nest.svg?branch=master" alt="Travis" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://img.shields.io/travis/nestjs/nest/master.svg?label=linux" alt="Linux" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#5" alt="Coverage" /></a>
-<a href="https://gitter.im/nestjs/nestjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge"><img src="https://badges.gitter.im/nestjs/nestjs.svg" alt="Gitter" /></a>
-<a href="https://opencollective.com/nest#backer"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec"><img src="https://img.shields.io/badge/Donate-PayPal-dc3d53.svg"/></a>
-  <a href="https://twitter.com/nestframework"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### Удаление пользователя
+- Метод: DELETE
+- Путь: /user/:id
+- Тело запроса (JSON): нет
+- URL параметры: нет
+- Формат ответа: объект `DeleteResult`
+    - `raw` - object (результат SQL запроса)
+    - `affected` - integer (кол-во удаленных строк)
+    
+    ИЛИ [ошибка](#Ошибки)
+    
+### Изменение пользователя
+- Метод: PUT
+- Путь: /user/:id
+- Тело запроса (JSON): 
+    - `password` - string (новый пароль)
+    - `email` - string (новый email)
+    - `finishedTests` - TestResult (завершенный тест)
+    
+Примечание: все поля необязательные
 
-## Description
+Модель `TestResult`
+    - id - string (ID завершенного теста)
+    - result - Array<boolean> (результаты ответов)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
+Пример `TestResult`:
+```
+{
+  "id": 1, // завершен тест с ID 1
+  "result": [true, true, false] // первые 2 ответа верные, 3-ий - неверный
+}
 ```
 
-## Running the app
+- URL параметры: нет
+- Формат ответа: объект `User` ИЛИ [ошибка](#Ошибки)
 
-```bash
-# development
-$ npm run start
 
-# watch mode
-$ npm run start:dev
+## Тест
+### Получение тестов
 
-# production mode
-$ npm run start:prod
+- Метод: GET
+- Путь: /test/
+- Тело запроса (JSON): нет
+- URL параметры:
+    - `limit` - number (кол-во тестов, которое нужно получить - для пагинации )
+        
+        По умолчанию = 15
+    - `offset` - number (отступ от начала списка тестов в БД - для пагинации)
+    
+        По умолчанию = 0
+    - `sort` - string (сортировка тестов - `ASC`/`DESC`)
+    
+        По умолчанию = `DESC`
+- Формат ответа: массив объектов `Test` и ИЛИ [ошибка](#Ошибки)
+
+### Получение теста
+
+- Метод: GET
+- Путь: /test/:id
+- Тело запроса (JSON): нет
+- URL параметры: нет
+- Формат ответа: объект `User` и ИЛИ [ошибка](#Ошибки)
+
+### Создание теста
+
+- Метод: POST
+- Путь: /test
+- Тело запроса (JSON):
+    - `title`* - string (название теста)
+    - `createdBy`* - number (id пользователя, создавшего тест)
+    - `description` - string (описание теста)
+    - `questions` - Array\<Question> (список вопросов теста)
+    
+    Модель `Question`: 
+    - `text`* - string (текст вопроса)
+    - `options`* - Array\<string> (массив вариантов ответа)
+    - `rightOptionId`* - number (ID элемента массива `options` с правильным ответом)
+    
+    Пример `Question`:
+    ```
+    {
+      "text": "Сколько будет 2+2?",
+      "options": ["2", "4", "6"],
+      "rightOptionId": 1 // нумерация начинается с 0
+    } 
+    ```
+- URL параметры: нет
+- Формат ответа: объект `Test` ИЛИ [ошибка](#Ошибки)
+
+
+### Удаление теста
+- Метод: DELETE
+- Путь: /test/:id
+- Тело запроса (JSON): нет
+- URL параметры: нет
+- Формат ответа: объект `DeleteResult`
+    - `raw` - object (результат SQL запроса)
+    - `affected` - integer (кол-во удаленных строк)
+    
+    ИЛИ [ошибка](#Ошибки)
+
+## Ошибки
+Представляют из себя объект с полями:
+- `statusCode` - HTTP код ошибки
+- `error` - соответствующий HTTP коду текст ошибки
+- `message` - текст ошибки, отправленный сервисом
+
+Например:
+```json
+{
+  "statusCode": 404,
+  "error": "Not Found",
+  "message": "Could not find any entity of type \"User\" matching: \"31123\""
+}
 ```
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-  Nest is [MIT licensed](LICENSE).
+## Модели
+Описание сущностей `TestResult`, `User`, `Test`, `Question`
+![Модель данных](https://i.imgur.com/8HmkpMi.png)
