@@ -25,14 +25,14 @@ export class TestService {
   }
 
   async getById(id: number): Promise<Test> {
-    return this.testRepository.findOneOrFail(id);
+    return this.testRepository.findOneOrFail(id)
+      .then(test => {
+        const newTest: Test = Object.assign(test, { createdBy: test.createdBy.login });
+        return newTest;
+      });
   }
 
   async getAll(sort: SortType, offset: number, limit: number) {
     return this.testRepository.find({ order: { createdAt: sort }, skip: offset, take: limit });
-  }
-
-  async getMultipleById(ids: number[]) {
-
   }
 }
