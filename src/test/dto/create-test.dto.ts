@@ -26,7 +26,7 @@ export class CreateTestDto {
 
   @IsNumber()
   @IsNotEmpty()
-  @ApiModelProperty({ required: true, type: 'int', nullable: false, example: 8 })
+  @ApiModelProperty({ required: true, type: 'integer', nullable: false, example: 8 })
   readonly createdBy: User; // TODO: брать ID из токена
 
   @IsNotEmpty()
