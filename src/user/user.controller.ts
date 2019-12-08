@@ -97,6 +97,11 @@ export class UserController {
   @Get()
   @ApiImplicitQuery({ required: true, type: String, name: 'login' })
   async getByLogin(@Query('login') login: string): Promise<User> {
-    return this.userService.getByLogin(login);
+    return this.userService.getByLogin(login).catch(e => {
+      if (e.name === 'EntityNotFound') {
+        throw new NotFoundException(`No user found with specified login: ${login}`);
+      }
+      throw new BadRequestException(e.message);
+    });
   }
 }
