@@ -93,4 +93,10 @@ export class UserController {
       throw new BadRequestException(e.message);
     });
   }
+
+  @Get()
+  @ApiImplicitQuery({ required: true, type: String, name: 'login' })
+  async getByLogin(@Query('login') login: string): Promise<User> {
+    return this.userService.getByLogin(login);
+  }
 }

@@ -73,6 +73,10 @@ export class UserService {
       .findOneOrFail(id, SAFE_USER_OUTPUT);
   }
 
+  async getByLogin(login: string): Promise<User> {
+    return this.userRepository.findOneOrFail({ login: login }, SAFE_USER_OUTPUT);
+  }
+
   async getMultipleById(ids: number[]): Promise<User[]> {
     return this.userRepository
       .findByIds(ids, SAFE_USER_OUTPUT as FindManyOptions);
