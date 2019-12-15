@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Test } from './entity/test.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -24,7 +24,10 @@ export class TestService {
   }
 
   async delete(id: number) {
-    return this.testRepository.delete(id);
+    return this.testRepository.delete(id)
+      .catch(err => {
+        throw new InternalServerErrorException(err);
+      });
   }
 
   async getById(id: number): Promise<Test> {
@@ -32,6 +35,12 @@ export class TestService {
       .then(test => {
         const newTest: Test = Object.assign(test, { createdBy: test.createdBy.login });
         return newTest;
+      })
+      .catch(err => {
+        if (err.name === 'EntityNotFound') {
+          throw new NotFoundException(err);
+        }
+        throw new InternalServerErrorException(err);
       });
   }
 
