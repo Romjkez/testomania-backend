@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { DeleteResult, FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,12 +8,7 @@ import * as bcrypt from 'bcryptjs';
 
 const SAFE_USER_OUTPUT: FindOneOptions = {
   select: ['id', 'email', 'login', 'createdAt', 'updatedAt', 'finishedTests'],
-  join: {
-    alias: 'user',
-    leftJoinAndSelect: {
-      createdTests: 'user.createdTests',
-    },
-  },
+  relations: ['createdTests'],
 };
 
 @Injectable()
@@ -52,15 +47,29 @@ export class UserService {
     }
     return this.userRepository
       .findOneOrFail(id)
-      .then(async () => {
-        const options = { ...updateOptions, updatedAt: new Date() };
+      .then(async user => {
+        const options: any = { ...updateOptions, updatedAt: new Date() };
         if (password) {
           options.password = password;
+        }
+        if (options.finishedTests) {
+          user.finishedTests.forEach(t => {
+            if (t.id === options.finishedTests.id) {
+              throw new UnprocessableEntityException('User has already finished this test');
+            }
+          });
+          options.finishedTests = user.finishedTests;
+          options.finishedTests.push(updateOptions.finishedTests);
         }
         return this.userRepository.update(id, options as object);
       })
       .then(() => {
         return this.userRepository.findOne(id, SAFE_USER_OUTPUT);
+      }).catch(e => {
+        if (e.name === 'EntityNotFound') {
+          throw new NotFoundException(`No user found with specified ID: ${id}`);
+        }
+        throw new BadRequestException(e.response || e);
       });
   }
 

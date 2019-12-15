@@ -67,12 +67,7 @@ export class UserController {
   @Put(':id')
   @UsePipes(UpdateUserDtoPipe)
   async update(@Body() options: UpdateUserDto, @Param('id') id: number): Promise<User> {
-    return this.userService.update(id, options).catch(e => {
-      if (e.name === 'EntityNotFound') {
-        throw new NotFoundException(`No user found with specified ID: ${id}`);
-      }
-      throw new BadRequestException(e.message);
-    });
+    return this.userService.update(id, options);
   }
 
   @ApiOkResponse({ type: DeleteResult })
@@ -82,7 +77,7 @@ export class UserController {
       if (e.name === 'EntityNotFound') {
         throw new NotFoundException(`No user found with specified ID: ${id}`);
       }
-      throw new BadRequestException(e.message);
+      throw new BadRequestException(e);
     });
   }
 
